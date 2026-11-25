@@ -3,8 +3,8 @@
 
 #include "lvgl.h"
 
-void ui_input_init();
-lv_group_t *ui_input_group();
+void ui_input_init(void);
+lv_group_t *ui_input_group(void);
 void ui_input_set_group(lv_group_t *group);
 
 #endif

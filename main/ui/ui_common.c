@@ -1,4 +1,5 @@
 #include "ui_common.h"
+
 #include "ui_styles.h"
 
 lv_obj_t *ui_create_button(lv_obj_t *parent, const char *text,
@@ -51,4 +52,15 @@ void ui_grid_place(lv_obj_t *obj, int32_t column, int32_t row, int32_t col_span,
 
   lv_obj_set_grid_cell(obj, LV_GRID_ALIGN_STRETCH, column, col_span,
                        LV_GRID_ALIGN_STRETCH, row, row_span);
+}
+
+lv_obj_t *ui_create_title(lv_obj_t *parent,
+                          const char *text) {
+
+    lv_obj_t *title = lv_label_create(parent);
+
+    lv_label_set_text(title, text);
+    lv_obj_align(title, LV_ALIGN_TOP_MID, 0, 2);
+
+    return title;
 }

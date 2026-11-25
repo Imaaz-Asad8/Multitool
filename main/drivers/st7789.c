@@ -1,4 +1,8 @@
 #include "st7789.h"
+
+#include <stdbool.h>
+#include <stdint.h>
+
 #include "driver/gpio.h"
 #include "driver/spi_master.h"
 #include "esp_err.h"
@@ -9,19 +13,27 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
+#define TFT_MOSI GPIO_NUM_9
+#define TFT_SCLK GPIO_NUM_7
+#define TFT_CS GPIO_NUM_8
+#define TFT_DC GPIO_NUM_44
+#define TFT_RST GPIO_NUM_4
+
+#define TFT_FREQ 20000000
 #define TFT_HOST SPI2_HOST
+#define TFT_TEST_ROWS (TFT_HEIGHT / 4)
 
 static esp_lcd_panel_io_handle_t io_handle = NULL;
 static esp_lcd_panel_handle_t panel_handle = NULL;
 
-void st7789_init() {
+void st7789_init(void) {
   spi_bus_config_t bus_config = {.mosi_io_num = TFT_MOSI,
                                  .miso_io_num = -1,
                                  .sclk_io_num = TFT_SCLK,
                                  .quadhd_io_num = -1,
                                  .quadwp_io_num = -1,
                                  .max_transfer_sz =
-                                     TFT_WIDTH * 80 * sizeof(uint16_t)};
+                                     TFT_WIDTH * TFT_HEIGHT * sizeof(uint16_t)};
 
   ESP_ERROR_CHECK(spi_bus_initialize(TFT_HOST, &bus_config, SPI_DMA_CH_AUTO));
 
@@ -48,30 +60,31 @@ void st7789_init() {
 
   ESP_ERROR_CHECK(esp_lcd_panel_init(panel_handle));
 
-  ESP_ERROR_CHECK(esp_lcd_panel_invert_color(panel_handle, 1));
+  ESP_ERROR_CHECK(esp_lcd_panel_invert_color(panel_handle, true));
 
-  ESP_ERROR_CHECK(esp_lcd_panel_disp_on_off(panel_handle, 1));
+  ESP_ERROR_CHECK(esp_lcd_panel_disp_on_off(panel_handle, true));
 }
 
-esp_lcd_panel_io_handle_t st7789_get_io() { return io_handle; }
+esp_lcd_panel_io_handle_t st7789_get_io(void) { return io_handle; }
 
-esp_lcd_panel_handle_t st7789_get_panel() { return panel_handle; }
+esp_lcd_panel_handle_t st7789_get_panel(void) { return panel_handle; }
 
 void st7789_test(void) {
 
-  static uint8_t buffer[TFT_WIDTH * 80 * 2];
+  static uint8_t buffer[TFT_WIDTH * TFT_TEST_ROWS * 2];
 
-  uint16_t colors[] = {0xF800, 0x07E0, 0x001F, 0xFFFF};
+  const uint16_t colors[] = {0xF800, 0x07E0, 0x001F, 0xFFFF};
 
   for (int i = 0; i < 4; i++) {
 
-    for (int j = 0; j < TFT_WIDTH * 80; j++) {
+    for (int j = 0; j < TFT_WIDTH * TFT_TEST_ROWS; j++) {
       buffer[j * 2] = colors[i] >> 8;
       buffer[j * 2 + 1] = colors[i] & 0xFF;
     }
 
-    ESP_ERROR_CHECK(esp_lcd_panel_draw_bitmap(panel_handle, 0, i * 80,
-                                              TFT_WIDTH, (i + 1) * 80, buffer));
+    ESP_ERROR_CHECK(esp_lcd_panel_draw_bitmap(panel_handle, 0,
+                                              i * TFT_TEST_ROWS, TFT_WIDTH,
+                                              (i + 1) * TFT_TEST_ROWS, buffer));
 
     vTaskDelay(pdMS_TO_TICKS(200));
   }

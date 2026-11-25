@@ -5,7 +5,7 @@ static lv_style_t focused_style;
 static lv_style_t screen_style;
 static lv_style_t grid_style;
 
-void ui_styles_init() {
+void ui_styles_init(void) {
   lv_style_init(&button_style);
   lv_style_init(&focused_style);
   lv_style_init(&screen_style);

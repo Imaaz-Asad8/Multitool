@@ -1,8 +1,10 @@
 #ifndef ENCODER_H
 #define ENCODER_H
 
-void encoder_init();
-int encoder_read();
-bool encoder_button_pressed();
+#include <stdbool.h>
+
+void encoder_init(void);
+int encoder_read(void);
+bool encoder_button_pressed(void);
 
 #endif

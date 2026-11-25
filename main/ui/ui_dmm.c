@@ -1,7 +1,8 @@
 #include "ui_dmm.h"
 #include "ui_styles.h"
 #include "ui_common.h"
-lv_group_t *dmm_group = NULL;
+
+static lv_group_t *dmm_group = NULL;
 
 lv_obj_t *ui_dmm_screen(lv_event_cb_t back_callback) {
 

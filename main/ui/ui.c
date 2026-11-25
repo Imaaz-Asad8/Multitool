@@ -1,14 +1,16 @@
 #include "ui.h"
-#include "esp_log.h"
+
+#include <stddef.h>
+#include <stdint.h>
+
 #include "esp_lvgl_port.h"
 #include "lvgl.h"
+
 #include "ui_common.h"
 #include "ui_dmm.h"
 #include "ui_input.h"
 #include "ui_styles.h"
 #include "ui_i2c.h"
-#include <stddef.h>
-#include <stdint.h>
 
 typedef struct {
   const char *text;
@@ -19,9 +21,9 @@ static lv_obj_t *main_menu_screen = NULL;
 static lv_obj_t *dmm_screen = NULL;
 static lv_obj_t *i2c_screen = NULL;
 
-static int32_t columns[3] = {LV_GRID_FR(1), LV_GRID_FR(1),
+static const int32_t columns[3] = {LV_GRID_FR(1), LV_GRID_FR(1),
                              LV_GRID_TEMPLATE_LAST};
-static int32_t rows[3] = {LV_GRID_FR(1), LV_GRID_FR(1), LV_GRID_TEMPLATE_LAST};
+static const int32_t rows[3] = {LV_GRID_FR(1), LV_GRID_FR(1), LV_GRID_TEMPLATE_LAST};
 
 static void back_click_cb(lv_event_t *event) {
   ui_input_set_group(ui_input_group());
@@ -51,7 +53,7 @@ static void i2c_click_cb(lv_event_t *event) {
 static menu_item_t items[] = {
     {"DMM", dmm_click_cb}, {"IR", NULL}, {"I2C", i2c_click_cb}, {"Gen", NULL}};
 
-void ui_init() {
+void ui_init(void) {
   if (lvgl_port_lock(0)) {
 
     ui_styles_init();

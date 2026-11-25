@@ -1,5 +1,8 @@
 #include "ui_i2c.h"
-#include "display.h"
+
+#include <stdint.h>
+
+#include "i2c_bus.h"
 #include "i2c_scanner.h"
 #include "ui_common.h"
 #include "ui_styles.h"
@@ -10,7 +13,7 @@ static lv_obj_t *results_label = NULL;
 static void scan_click_cb(lv_event_t *event) {
   uint8_t addresses[112];
 
-  int count = scanner(oled_get_bus(), addresses);
+  int count = scanner(i2c_get_bus_handle(), addresses);
 
   if (count == 0) {
     lv_label_set_text(results_label, "No devices");
