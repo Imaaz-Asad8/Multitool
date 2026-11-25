@@ -28,12 +28,9 @@ lv_obj_t *ui_i2c_screen(lv_event_cb_t back_callback) {
   lv_obj_t *screen = lv_obj_create(NULL);
   ui_styles_apply_screen(screen);
 
-  lv_obj_t *title = lv_label_create(screen);
-  lv_label_set_text(title, "I2C Scanner");
-  lv_obj_align(title, LV_ALIGN_TOP_MID, 0, 2);
+  ui_create_title(screen, "I2C Scanner");
 
   results_label = lv_label_create(screen);
-  lv_label_set_text(results_label, "Ready to scan");
   lv_obj_align(results_label, LV_ALIGN_TOP_MID, 0, 19);
 
   lv_obj_t *scan_button =
@@ -50,3 +47,9 @@ lv_obj_t *ui_i2c_screen(lv_event_cb_t back_callback) {
 }
 
 lv_group_t *ui_i2c_group(void) { return i2c_group; }
+
+void ui_i2c_reset(){
+  if (results_label != NULL){
+    lv_label_set_text(results_label, "Ready to scan");
+  }
+}

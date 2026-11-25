@@ -8,9 +8,9 @@
 
 #include "ui_common.h"
 #include "ui_dmm.h"
+#include "ui_i2c.h"
 #include "ui_input.h"
 #include "ui_styles.h"
-#include "ui_i2c.h"
 
 typedef struct {
   const char *text;
@@ -22,8 +22,9 @@ static lv_obj_t *dmm_screen = NULL;
 static lv_obj_t *i2c_screen = NULL;
 
 static const int32_t columns[3] = {LV_GRID_FR(1), LV_GRID_FR(1),
-                             LV_GRID_TEMPLATE_LAST};
-static const int32_t rows[3] = {LV_GRID_FR(1), LV_GRID_FR(1), LV_GRID_TEMPLATE_LAST};
+                                   LV_GRID_TEMPLATE_LAST};
+static const int32_t rows[3] = {LV_GRID_FR(1), LV_GRID_FR(1),
+                                LV_GRID_TEMPLATE_LAST};
 
 static void back_click_cb(lv_event_t *event) {
   ui_input_set_group(ui_input_group());
@@ -42,12 +43,14 @@ static void dmm_click_cb(lv_event_t *event) {
 
 static void i2c_click_cb(lv_event_t *event) {
 
-    if (i2c_screen == NULL) {
-        i2c_screen = ui_i2c_screen(back_click_cb);
-    }
+  if (i2c_screen == NULL) {
+    i2c_screen = ui_i2c_screen(back_click_cb);
+  }
 
-    ui_input_set_group(ui_i2c_group());
-    lv_screen_load(i2c_screen);
+  ui_i2c_reset();
+
+  ui_input_set_group(ui_i2c_group());
+  lv_screen_load(i2c_screen);
 }
 
 static menu_item_t items[] = {

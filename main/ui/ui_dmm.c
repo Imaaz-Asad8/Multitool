@@ -11,9 +11,7 @@ lv_obj_t *ui_dmm_screen(lv_event_cb_t back_callback) {
   lv_obj_t *screen = lv_obj_create(NULL);
   ui_styles_apply_screen(screen);
 
-  lv_obj_t *title = lv_label_create(screen);
-  lv_label_set_text(title, "DMM");
-  lv_obj_align(title, LV_ALIGN_TOP_MID, 0, 2);
+  ui_create_title(screen, "DMM");
 
   ui_create_back_button(screen, dmm_group, back_callback);
   
