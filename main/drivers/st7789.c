@@ -13,11 +13,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-#define TFT_MOSI GPIO_NUM_9
-#define TFT_SCLK GPIO_NUM_7
-#define TFT_CS GPIO_NUM_8
-#define TFT_DC GPIO_NUM_44
-#define TFT_RST GPIO_NUM_4
+#include "board_pins.h"
 
 #define TFT_FREQ 20000000
 #define TFT_HOST SPI2_HOST
@@ -27,9 +23,9 @@ static esp_lcd_panel_io_handle_t io_handle = NULL;
 static esp_lcd_panel_handle_t panel_handle = NULL;
 
 void st7789_init(void) {
-  spi_bus_config_t bus_config = {.mosi_io_num = TFT_MOSI,
+  spi_bus_config_t bus_config = {.mosi_io_num = SPI_MOSI,
                                  .miso_io_num = -1,
-                                 .sclk_io_num = TFT_SCLK,
+                                 .sclk_io_num = SPI_SCLK,
                                  .quadhd_io_num = -1,
                                  .quadwp_io_num = -1,
                                  .max_transfer_sz =

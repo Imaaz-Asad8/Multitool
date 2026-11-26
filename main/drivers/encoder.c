@@ -4,9 +4,7 @@
 #include "driver/pulse_cnt.h"
 #include "esp_err.h"
 
-#define ENCODER_CLK GPIO_NUM_1
-#define ENCODER_DT GPIO_NUM_2
-#define ENCODER_SW GPIO_NUM_3
+#include "board_pins.h"
 
 static pcnt_unit_handle_t pcnt_unit = NULL;
 
